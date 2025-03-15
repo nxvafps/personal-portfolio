@@ -1,0 +1,41 @@
+enum ProjectStatus {
+  IDEA = "IDEA",
+  PLANNING = "PLANNING",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+  ON_HOLD = "ON_HOLD",
+  ABANDONED = "ABANDONED",
+}
+
+export const projects = [
+  {
+    title: "Personal Portfolio",
+    description: "My personal portfolio website built with Next.js and Prisma.",
+    slug: "personal-portfolio",
+    imageUrl: "/images/portfolio.png",
+    status: ProjectStatus.IN_PROGRESS,
+    liveDemoUrl: "https://myportfolio.com",
+    githubUrl: "https://github.com/username/personal-portfolio",
+    technologies: ["Next.js", "React", "Prisma", "TypeScript"],
+    featured: true,
+    startDate: new Date("2025-03-14"),
+    endDate: null,
+    category: "Web Development",
+    testimonial: null,
+  },
+  {
+    title: "E-commerce Store",
+    description: "A full-stack e-commerce application with payment processing.",
+    slug: "ecommerce-store",
+    imageUrl: "/images/ecommerce.png",
+    status: ProjectStatus.COMPLETED,
+    githubUrl: "https://github.com/username/ecommerce-store",
+    liveDemoUrl: null,
+    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
+    featured: false,
+    startDate: new Date("2023-06-15"),
+    endDate: new Date("2023-12-20"),
+    category: "Web Application",
+    testimonial: null,
+  },
+];
