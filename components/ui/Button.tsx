@@ -79,7 +79,8 @@ const buttonStyles = css<{
           border: 1px solid ${theme.colors.primary};
 
           &:hover {
-            background-color: ${theme.colors.primaryLight};
+            background-color: ${theme.colors.primary};
+            color: ${theme.colors.text.light};
           }
         `;
       case "text":

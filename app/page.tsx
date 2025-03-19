@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Typography } from "@/components/ui/Typography";
 import { Button, LinkButton } from "@/components/ui/Button";
 import Image from "next/image";
@@ -16,41 +16,104 @@ import {
 } from "@/app/assets/icons";
 import { TechSkills } from "@/components/home/TechSkillsSection.tsx";
 
+// Animations
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const gradientAnimation = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
+
 const PageContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing[6]};
 `;
 
-const Section = styled(BaseSection)``;
+const Section = styled(BaseSection)`
+  margin: ${theme.spacing[16]} 0;
+  position: relative;
+`;
 
 const HeroSection = styled(Section)`
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: ${theme.spacing[16]} 0;
+  padding: ${theme.spacing[20]} 0 ${theme.spacing[16]};
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      ${theme.colors.primary}22,
+      ${theme.colors.secondary}33,
+      ${theme.colors.accent}22
+    );
+    background-size: 200% 200%;
+    animation: ${gradientAnimation} 15s ease infinite;
+    opacity: 0.7;
+    z-index: -1;
+    border-radius: ${theme.borderRadius.xl};
+  }
+
+  h1,
+  h2,
+  p {
+    animation: ${fadeIn} 0.8s ease-out forwards;
+  }
+
+  h2 {
+    animation-delay: 0.2s;
+  }
+
+  p {
+    animation-delay: 0.4s;
+  }
 
   ${media.md} {
-    padding: ${theme.spacing[16]} 0;
+    padding: ${theme.spacing[24]} 0 ${theme.spacing[20]};
   }
 `;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: ${theme.spacing[8]};
+  gap: ${theme.spacing[12]};
 
   ${media.md} {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1.2fr) 0.8fr;
   }
 `;
 
 const ProjectsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: ${theme.spacing[6]};
-  margin-top: ${theme.spacing[8]};
+  gap: ${theme.spacing[8]};
+  margin-top: ${theme.spacing[10]};
 
   ${media.sm} {
     grid-template-columns: repeat(2, 1fr);
@@ -64,8 +127,11 @@ const ProjectsGrid = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   gap: ${theme.spacing[4]};
-  margin-top: ${theme.spacing[6]};
+  margin-top: ${theme.spacing[8]};
   justify-content: center;
+  animation: ${fadeIn} 0.8s ease-out forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
 `;
 
 const Skills = styled.div`
@@ -85,7 +151,7 @@ const Skill = styled.div`
   width: 60px;
   height: 60px;
   border-radius: ${theme.borderRadius.xl};
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
   backdrop-filter: blur(8px);
 
   &:hover {
@@ -109,7 +175,7 @@ const Skill = styled.div`
   }
 
   svg {
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s ease-in-out;
   }
 
   &:hover svg {
@@ -121,6 +187,11 @@ const SkillsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: ${theme.spacing[8]};
+  background: ${theme.colors.background.dark}66;
+  padding: ${theme.spacing[6]};
+  border-radius: ${theme.borderRadius.xl};
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 
   ${media.md} {
     grid-template-columns: repeat(2, 1fr);
@@ -141,10 +212,18 @@ const AboutContainer = styled.div`
 
 const AboutText = styled.div`
   position: relative;
-  padding: 0 ${theme.spacing[6]};
-  background: ${theme.colors.background.dark};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: ${theme.spacing[6]};
+  background: ${theme.colors.background.dark}cc;
+  border-radius: ${theme.borderRadius.xl};
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  transform: translateZ(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  }
 
   &:not(:last-child)::after {
     content: "";
@@ -155,6 +234,60 @@ const AboutText = styled.div`
     width: 2px;
     height: ${theme.spacing[4]};
     background-color: ${theme.colors.primary};
+  }
+`;
+
+const SectionHeader = styled.div`
+  margin-bottom: ${theme.spacing[8]};
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -${theme.spacing[4]};
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      ${theme.colors.primary},
+      ${theme.colors.secondary}
+    );
+    border-radius: ${theme.borderRadius.full};
+  }
+`;
+
+const ProjectsSection = styled(Section)`
+  background: ${theme.colors.background.dark}33;
+  padding: ${theme.spacing[12]} ${theme.spacing[8]};
+  border-radius: ${theme.borderRadius.xl};
+  backdrop-filter: blur(10px);
+`;
+
+const CTASection = styled(Section)`
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary}22,
+    ${theme.colors.secondary}33,
+    ${theme.colors.primary}22
+  );
+  background-size: 200% 200%;
+  animation: ${gradientAnimation} 10s ease infinite;
+  border-radius: ${theme.borderRadius.xl};
+  padding: ${theme.spacing[16]} ${theme.spacing[8]};
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  margin-bottom: ${theme.spacing[16]};
+
+  h2 {
+    margin-bottom: ${theme.spacing[4]};
+    background: -webkit-linear-gradient(
+      ${theme.colors.text.dark},
+      ${theme.colors.primary}
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
   }
 `;
 
@@ -215,7 +348,9 @@ export default function Home() {
       <Section>
         <Grid>
           <div>
-            <Typography.H2 variant="dark">About Me</Typography.H2>
+            <SectionHeader>
+              <Typography.H2 variant="dark">About Me</Typography.H2>
+            </SectionHeader>
             <AboutContainer>
               <AboutText>
                 <Typography.Text variant="dark">
@@ -248,7 +383,9 @@ export default function Home() {
             </AboutContainer>
           </div>
           <div>
-            <Typography.H2 variant="dark">Tech Stack</Typography.H2>
+            <SectionHeader>
+              <Typography.H2 variant="dark">Tech Stack</Typography.H2>
+            </SectionHeader>
             <SkillsGrid>
               <TechSkills title="Environment" technologies={environmentIcons} />
               <TechSkills title="Languages" technologies={languageIcons} />
@@ -267,8 +404,10 @@ export default function Home() {
         </Grid>
       </Section>
 
-      <Section>
-        <Typography.H2 variant="dark">Featured Projects</Typography.H2>
+      <ProjectsSection>
+        <SectionHeader>
+          <Typography.H2 variant="dark">Featured Projects</Typography.H2>
+        </SectionHeader>
         <Typography.Text variant="dark">
           Here are some of my recent projects. Check out the projects page for
           more.
@@ -298,22 +437,14 @@ export default function Home() {
           </ProjectsGrid>
         )}
 
-        <div style={{ textAlign: "center", marginTop: theme.spacing[8] }}>
-          <LinkButton href="/projects" variant="outline">
+        <div style={{ textAlign: "center", marginTop: theme.spacing[12] }}>
+          <LinkButton href="/projects" variant="outline" size="lg">
             View All Projects
           </LinkButton>
         </div>
-      </Section>
+      </ProjectsSection>
 
-      <Section
-        style={{
-          backgroundColor: theme.colors.background.dark,
-          color: theme.colors.text.light,
-          padding: theme.spacing[12],
-          borderRadius: theme.borderRadius.lg,
-          textAlign: "center",
-        }}
-      >
+      <CTASection>
         <Typography.H2 variant="dark">Let's Work Together</Typography.H2>
         <Typography.Text variant="dark">
           I'm currently available for freelance work and interesting projects.
@@ -325,7 +456,7 @@ export default function Home() {
             Contact Me
           </LinkButton>
         </ButtonContainer>
-      </Section>
+      </CTASection>
     </PageContainer>
   );
 }
