@@ -391,7 +391,7 @@ export default function Home() {
               <TechSkills title="Languages" technologies={languageIcons} />
               <TechSkills title="Frameworks" technologies={frameworkIcons} />
               <TechSkills
-                title="Tools and Technologies"
+                title="Technologies"
                 technologies={toolsAndTechnologies}
               />
             </SkillsGrid>
