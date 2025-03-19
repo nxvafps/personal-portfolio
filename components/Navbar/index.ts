@@ -1,3 +1,4 @@
-import Navbar from "./Navbar";
+"use client";
 
-export { Navbar };
+export { default } from "./Navbar";
+export * from "./styles";

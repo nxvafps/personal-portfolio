@@ -90,7 +90,7 @@ export const TechSkills: React.FC<TechSkillsProps> = ({
               boxShadow: "0 3px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <Typography.Text variant="dark">
+            <Typography.Text variant="dark" noMargin>
               +{technologies.length - 3}
             </Typography.Text>
           </Skill>

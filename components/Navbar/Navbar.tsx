@@ -2,7 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import {
   NavContainer,
   NavInner,
@@ -42,48 +43,112 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const isActive = (path: string) => pathname === path;
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", handleEscape);
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [menuOpen]);
+
+  const isActive = useCallback((path: string) => pathname === path, [pathname]);
+
+  const handleSignOut = () => {
+    setMenuOpen(false);
+    signOut();
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev);
+  };
 
   return (
-    <NavContainer>
+    <NavContainer role="navigation" aria-label="Main navigation">
       <NavInner>
         <NavContent>
           <NavSection>
             <LogoContainer>
-              <Logo href="/">Portfolio</Logo>
+              <Logo href="/" aria-label="Go to homepage">
+                Portfolio
+              </Logo>
             </LogoContainer>
-            <DesktopNavLinks>
-              <NavLink href="/" $active={isActive("/")}>
+
+            <DesktopNavLinks aria-label="Desktop navigation menu">
+              <NavLink
+                href="/"
+                $active={isActive("/")}
+                aria-current={isActive("/") ? "page" : undefined}
+              >
                 Home
               </NavLink>
-              <NavLink href="/projects" $active={isActive("/projects")}>
+              <NavLink
+                href="/projects"
+                $active={isActive("/projects")}
+                aria-current={isActive("/projects") ? "page" : undefined}
+              >
                 Projects
               </NavLink>
-              <NavLink href="/about" $active={isActive("/about")}>
+              <NavLink
+                href="/about"
+                $active={isActive("/about")}
+                aria-current={isActive("/about") ? "page" : undefined}
+              >
                 About
               </NavLink>
-              <NavLink href="/contact" $active={isActive("/contact")}>
+              <NavLink
+                href="/contact"
+                $active={isActive("/contact")}
+                aria-current={isActive("/contact") ? "page" : undefined}
+              >
                 Contact
               </NavLink>
             </DesktopNavLinks>
           </NavSection>
+
           <AuthSection>
             {status === "authenticated" ? (
               <UserInfo>
-                <NavLink href="/dashboard" $active={isActive("/dashboard")}>
+                <NavLink
+                  href="/dashboard"
+                  $active={isActive("/dashboard")}
+                  aria-current={isActive("/dashboard") ? "page" : undefined}
+                >
                   Dashboard
                 </NavLink>
-                <UserInfo>
+
+                <UserInfo
+                  aria-label={`Signed in as ${session.user?.name || "User"}`}
+                >
                   {session.user?.image ? (
-                    <Avatar src={session.user.image} alt="User avatar" />
+                    <Avatar
+                      src={session.user.image}
+                      alt={`${session.user.name}'s profile picture`}
+                    />
                   ) : (
-                    <DefaultAvatar>
+                    <DefaultAvatar aria-hidden="true">
                       {session.user?.name?.charAt(0) || "U"}
                     </DefaultAvatar>
                   )}
                   <UserName>{session.user?.name}</UserName>
                 </UserInfo>
-                <SignOutButton onClick={() => signOut()}>
+
+                <SignOutButton onClick={handleSignOut} aria-label="Sign out">
                   Sign out
                 </SignOutButton>
               </UserInfo>
@@ -95,8 +160,15 @@ export default function Navbar() {
             )}
           </AuthSection>
 
-          <MobileMenuButton onClick={() => setMenuOpen(!menuOpen)}>
-            <span className="sr-only">Open main menu</span>
+          <MobileMenuButton
+            onClick={toggleMenu}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? "Close main menu" : "Open main menu"}
+          >
+            <span className="sr-only">
+              {menuOpen ? "Close main menu" : "Open main menu"}
+            </span>
             <svg
               className={`${menuOpen ? "hidden" : "block"} h-6 w-6`}
               xmlns="http://www.w3.org/2000/svg"
@@ -131,18 +203,45 @@ export default function Navbar() {
         </NavContent>
       </NavInner>
 
-      <MobileMenu $isOpen={menuOpen}>
+      <MobileMenu
+        $isOpen={menuOpen}
+        id="mobile-menu"
+        aria-hidden={!menuOpen}
+        role="dialog"
+        aria-modal={menuOpen}
+        aria-label="Mobile navigation menu"
+      >
         <MobileNavLinks>
-          <MobileNavLink href="/" $active={isActive("/")}>
+          <MobileNavLink
+            href="/"
+            $active={isActive("/")}
+            aria-current={isActive("/") ? "page" : undefined}
+            tabIndex={menuOpen ? 0 : -1}
+          >
             Home
           </MobileNavLink>
-          <MobileNavLink href="/projects" $active={isActive("/projects")}>
+          <MobileNavLink
+            href="/projects"
+            $active={isActive("/projects")}
+            aria-current={isActive("/projects") ? "page" : undefined}
+            tabIndex={menuOpen ? 0 : -1}
+          >
             Projects
           </MobileNavLink>
-          <MobileNavLink href="/about" $active={isActive("/about")}>
+          <MobileNavLink
+            href="/about"
+            $active={isActive("/about")}
+            aria-current={isActive("/about") ? "page" : undefined}
+            tabIndex={menuOpen ? 0 : -1}
+          >
             About
           </MobileNavLink>
-          <MobileNavLink href="/contact" $active={isActive("/contact")}>
+          <MobileNavLink
+            href="/contact"
+            $active={isActive("/contact")}
+            aria-current={isActive("/contact") ? "page" : undefined}
+            tabIndex={menuOpen ? 0 : -1}
+          >
             Contact
           </MobileNavLink>
         </MobileNavLinks>
@@ -150,11 +249,16 @@ export default function Navbar() {
         <MobileAuthSection>
           {status === "authenticated" ? (
             <>
-              <MobileUserInfo>
+              <MobileUserInfo
+                aria-label={`Signed in as ${session.user?.name || "User"}`}
+              >
                 {session.user?.image ? (
-                  <MobileAvatar src={session.user.image} alt="User avatar" />
+                  <MobileAvatar
+                    src={session.user.image}
+                    alt={`${session.user.name}'s profile picture`}
+                  />
                 ) : (
-                  <MobileDefaultAvatar>
+                  <MobileDefaultAvatar aria-hidden="true">
                     {session.user?.name?.charAt(0) || "U"}
                   </MobileDefaultAvatar>
                 )}
@@ -164,16 +268,26 @@ export default function Navbar() {
                 </MobileUserTextInfo>
               </MobileUserInfo>
               <MobileAuthLinks>
-                <MobileAuthLink href="/dashboard">Dashboard</MobileAuthLink>
-                <MobileSignOutButton onClick={() => signOut()}>
+                <MobileAuthLink href="/dashboard" tabIndex={menuOpen ? 0 : -1}>
+                  Dashboard
+                </MobileAuthLink>
+                <MobileSignOutButton
+                  onClick={handleSignOut}
+                  aria-label="Sign out"
+                  tabIndex={menuOpen ? 0 : -1}
+                >
                   Sign out
                 </MobileSignOutButton>
               </MobileAuthLinks>
             </>
           ) : (
             <MobileAuthLinks>
-              <MobileAuthLink href="/login">Sign in</MobileAuthLink>
-              <MobileAuthLink href="/register">Register</MobileAuthLink>
+              <MobileAuthLink href="/login" tabIndex={menuOpen ? 0 : -1}>
+                Sign in
+              </MobileAuthLink>
+              <MobileAuthLink href="/register" tabIndex={menuOpen ? 0 : -1}>
+                Register
+              </MobileAuthLink>
             </MobileAuthLinks>
           )}
         </MobileAuthSection>
