@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { theme } from "@/lib/theme";
 import { Typography } from "@/components/ui/Typography";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { allTechnologyIcons } from "@/app/assets/icons";
 
 const ProjectDetailContainer = styled.div`
   max-width: 1200px;
@@ -45,6 +46,16 @@ const Tag = styled.span`
   padding: ${theme.spacing[1]} ${theme.spacing[3]};
   border-radius: ${theme.borderRadius.full};
   font-size: ${theme.typography.fontSize.sm};
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing[2]};
+`;
+
+const TechIcon = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
 `;
 
 const ProjectStatus = styled.div<{ status: string }>`
@@ -125,6 +136,53 @@ const LoadingContainer = styled.div`
 
 const TechSection = styled.div`
   margin-bottom: ${theme.spacing[6]};
+`;
+
+const Skills = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${theme.spacing[6]};
+  margin-top: ${theme.spacing[4]};
+`;
+
+const Skill = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: ${theme.borderRadius.xl};
+  transition: all 0.2s ease-in-out;
+  backdrop-filter: blur(8px);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+    &::after {
+      content: attr(data-name);
+      position: absolute;
+      bottom: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: ${theme.typography.fontSize.xs};
+      background-color: ${theme.colors.background.dark};
+      color: ${theme.colors.text.light};
+      padding: ${theme.spacing[1]} ${theme.spacing[2]};
+      border-radius: ${theme.borderRadius.md};
+      z-index: 10;
+    }
+  }
+
+  svg {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
+  }
 `;
 
 interface Project {
@@ -286,21 +344,67 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
       <ProjectSection>
         <Typography.H2 variant="dark">Technical Details</Typography.H2>
         <TechSection>
-          <Typography.H3 variant="dark">Technologies</Typography.H3>
-          <TagContainer>
-            {project.technologies.map((tech) => (
-              <Tag key={tech}>{tech}</Tag>
-            ))}
-          </TagContainer>
+          <Typography.H3 variant="dark">Languages</Typography.H3>
+          <Skills>
+            {project.languages.map((lang) => {
+              const langData = allTechnologyIcons.find(
+                (t) => t.name.toLowerCase() === lang.toLowerCase()
+              );
+
+              return (
+                <Skill
+                  key={lang}
+                  data-name={lang}
+                  style={{
+                    backgroundColor: langData
+                      ? `${langData.color}15`
+                      : undefined,
+                    border: langData
+                      ? `1px solid ${langData.color}30`
+                      : undefined,
+                  }}
+                >
+                  {langData &&
+                    React.createElement(langData.icon, {
+                      color: langData.color,
+                      size: "35",
+                    })}
+                </Skill>
+              );
+            })}
+          </Skills>
         </TechSection>
 
         <TechSection>
-          <Typography.H3 variant="dark">Languages</Typography.H3>
-          <TagContainer>
-            {project.languages.map((lang) => (
-              <Tag key={lang}>{lang}</Tag>
-            ))}
-          </TagContainer>
+          <Typography.H3 variant="dark">Technologies</Typography.H3>
+          <Skills>
+            {project.technologies.map((tech) => {
+              const techData = allTechnologyIcons.find(
+                (t) => t.name.toLowerCase() === tech.toLowerCase()
+              );
+
+              return (
+                <Skill
+                  key={tech}
+                  data-name={tech}
+                  style={{
+                    backgroundColor: techData
+                      ? `${techData.color}15`
+                      : undefined,
+                    border: techData
+                      ? `1px solid ${techData.color}30`
+                      : undefined,
+                  }}
+                >
+                  {techData &&
+                    React.createElement(techData.icon, {
+                      color: techData.color,
+                      size: "35",
+                    })}
+                </Skill>
+              );
+            })}
+          </Skills>
         </TechSection>
 
         <MetaInfo>
@@ -330,18 +434,22 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
         <div>
           {project.liveDemoUrl && (
             <LinkButton
-              href={project.liveDemoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() =>
+                window.open(
+                  project.liveDemoUrl!,
+                  "_blank",
+                  "noopener,noreferrer"
+                )
+              }
             >
               View Live Demo
             </LinkButton>
           )}
           {project.githubUrl && (
             <LinkButton
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() =>
+                window.open(project.githubUrl!, "_blank", "noopener,noreferrer")
+              }
             >
               View Source Code
             </LinkButton>

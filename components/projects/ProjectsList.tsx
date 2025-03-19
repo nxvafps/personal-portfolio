@@ -8,7 +8,7 @@ import { ProjectCard } from "./ProjectCard";
 import { ProjectStatus } from "@prisma/client";
 
 interface Project {
-  id: number; // Changed from string to number
+  id: number;
   title: string;
   description: string;
   status: string;

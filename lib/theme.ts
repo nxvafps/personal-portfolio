@@ -1,20 +1,17 @@
 export const theme = {
   colors: {
-    // Primary colors
-    primary: "#f97316", // Orange
-    primaryHover: "#ea580c", // Darker orange for hover effects
-    primaryLight: "#ffedd5", // Light orange for backgrounds
+    primary: "#f97316",
+    primaryHover: "#ea580c",
+    primaryLight: "#ffedd5",
 
-    // Secondary colors
-    secondary: "#0a0a0a", // Almost black
-    secondaryHover: "#171717", // Dark gray for hover effects
-    secondaryLight: "#262626", // Lighter dark for backgrounds
+    secondary: "#0a0a0a",
+    secondaryHover: "#171717",
+    secondaryLight: "#262626",
 
-    // Text colors
     text: {
-      primary: "#171717", // Dark text for light backgrounds
-      secondary: "#525252", // Gray text
-      light: "#ededed", // Light text for dark backgrounds
+      primary: "#171717",
+      secondary: "#525252",
+      light: "#ededed",
     },
 
     // UI colors
@@ -27,14 +24,12 @@ export const theme = {
       dark: "#262626",
     },
 
-    // States
     success: "#22c55e",
     error: "#ef4444",
     warning: "#f59e0b",
     info: "#3b82f6",
   },
 
-  // Typography
   typography: {
     fontFamily: {
       body: "Arial, Helvetica, sans-serif",
@@ -42,14 +37,14 @@ export const theme = {
       mono: "monospace",
     },
     fontSize: {
-      xs: "0.75rem", // 12px
-      sm: "0.875rem", // 14px
-      md: "1rem", // 16px
-      lg: "1.125rem", // 18px
-      xl: "1.25rem", // 20px
-      "2xl": "1.5rem", // 24px
-      "3xl": "1.875rem", // 30px
-      "4xl": "2.25rem", // 36px
+      xs: "0.75rem",
+      sm: "0.875rem",
+      md: "1rem",
+      lg: "1.125rem",
+      xl: "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem",
     },
     fontWeight: {
       normal: 400,
@@ -59,22 +54,20 @@ export const theme = {
     },
   },
 
-  // Spacing
   spacing: {
     0: "0",
-    1: "0.25rem", // 4px
-    2: "0.5rem", // 8px
-    3: "0.75rem", // 12px
-    4: "1rem", // 16px
-    5: "1.25rem", // 20px
-    6: "1.5rem", // 24px
-    8: "2rem", // 32px
-    10: "2.5rem", // 40px
-    12: "3rem", // 48px
-    16: "4rem", // 64px
+    1: "0.25rem",
+    2: "0.5rem",
+    3: "0.75rem",
+    4: "1rem",
+    5: "1.25rem",
+    6: "1.5rem",
+    8: "2rem",
+    10: "2.5rem",
+    12: "3rem",
+    16: "4rem",
   },
 
-  // Breakpoints
   breakpoints: {
     sm: "640px",
     md: "768px",
@@ -83,19 +76,17 @@ export const theme = {
     "2xl": "1536px",
   },
 
-  // Border radius
   borderRadius: {
     none: "0",
-    sm: "0.125rem", // 2px
-    DEFAULT: "0.25rem", // 4px
-    md: "0.375rem", // 6px
-    lg: "0.5rem", // 8px
-    xl: "0.75rem", // 12px
-    "2xl": "1rem", // 16px
-    full: "9999px", // Fully rounded (for circles)
+    sm: "0.125rem",
+    DEFAULT: "0.25rem",
+    md: "0.375rem",
+    lg: "0.5rem",
+    xl: "0.75rem",
+    "2xl": "1rem",
+    full: "9999px",
   },
 
-  // Box shadow
   boxShadow: {
     sm: "0 1px 2px rgba(0, 0, 0, 0.05)",
     DEFAULT: "0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)",
@@ -105,7 +96,6 @@ export const theme = {
   },
 };
 
-// Type for the theme
 export type Theme = typeof theme;
 
 // Helper for media queries

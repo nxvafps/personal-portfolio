@@ -95,7 +95,6 @@ export default function Navbar() {
             )}
           </AuthSection>
 
-          {/* Mobile menu button */}
           <MobileMenuButton onClick={() => setMenuOpen(!menuOpen)}>
             <span className="sr-only">Open main menu</span>
             <svg
@@ -132,7 +131,6 @@ export default function Navbar() {
         </NavContent>
       </NavInner>
 
-      {/* Mobile menu */}
       <MobileMenu $isOpen={menuOpen}>
         <MobileNavLinks>
           <MobileNavLink href="/" $active={isActive("/")}>

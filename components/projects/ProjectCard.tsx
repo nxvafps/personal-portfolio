@@ -7,16 +7,18 @@ import { Typography } from "../ui/Typography";
 import { Button } from "../ui/Button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { allTechnologyIcons } from "../../app/assets/icons";
 
 interface ProjectCardProps {
   project: {
-    id: number; // Changed from string to number
+    id: number;
     title: string;
     description: string;
     status: string;
     featured: boolean;
     liveDemoUrl?: string;
     githubUrl?: string;
+    technologies?: string[];
   };
 }
 
@@ -136,8 +138,7 @@ const FeaturedBadge = styled.div`
 const ProjectCardContent = styled.div`
   flex: 1;
   padding: ${theme.spacing[5]};
-  padding-top: ${theme
-    .spacing[10]}; // Increased from theme.spacing[6] to theme.spacing[10] for more space
+  padding-top: ${theme.spacing[10]};
 `;
 
 const BadgeContainer = styled.div`
@@ -191,6 +192,39 @@ const CardButton = styled(Button)`
   }
 `;
 
+const TechContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${theme.spacing[2]};
+  margin-top: ${theme.spacing[4]};
+  padding: 0 ${theme.spacing[5]};
+  padding-bottom: ${theme.spacing[4]};
+`;
+
+const TechItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing[1]};
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing[1]} ${theme.spacing[2]};
+  font-size: ${theme.typography.fontSize.xs};
+  white-space: nowrap;
+`;
+
+const TechIcon = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: ${(props) => props.color || theme.colors.primary.main};
+`;
+
+const TechName = styled.span`
+  color: ${theme.colors.text.light};
+  font-weight: 500;
+`;
+
 const formatStatus = (status: string) => {
   return status.replace(/_/g, " ");
 };
@@ -199,6 +233,11 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
   display: block;
+`;
+
+const TechMoreBadge = styled(TechItem)`
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: 600;
 `;
 
 export function ProjectCard({ project }: ProjectCardProps) {
@@ -211,7 +250,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
   };
 
   const handleButtonClick = (e: React.MouseEvent, url: string) => {
-    console.log("click");
     e.preventDefault();
     e.stopPropagation();
     window.open(url, "_blank", "noopener,noreferrer");
@@ -231,7 +269,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       >
         {project.featured && <FeaturedBadge>Featured</FeaturedBadge>}
         <BadgeContainer>
-          <ProjectStatus status={project.status}>
+          <ProjectStatus status={formatStatus(project.status)}>
             {formatStatus(project.status)}
           </ProjectStatus>
         </BadgeContainer>
@@ -239,6 +277,56 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <CardTitle>{project.title}</CardTitle>
           <Typography.Text>{project.description}</Typography.Text>
         </ProjectCardContent>
+
+        {project.technologies && project.technologies.length > 0 && (
+          <TechContainer>
+            {(() => {
+              const techsToShow = [];
+              let validTechCount = 0;
+
+              for (const tech of project.technologies) {
+                const techData = allTechnologyIcons.find(
+                  (t) => t.name.toLowerCase() === tech.toLowerCase()
+                );
+
+                if (techData) {
+                  if (validTechCount < 3) {
+                    techsToShow.push({ tech, techData });
+                    validTechCount++;
+                  } else {
+                    break;
+                  }
+                }
+              }
+
+              const totalValidTechs = project.technologies.filter((tech) =>
+                allTechnologyIcons.some(
+                  (t) => t.name.toLowerCase() === tech.toLowerCase()
+                )
+              ).length;
+
+              return (
+                <>
+                  {techsToShow.map(({ tech, techData }) => {
+                    const Icon = techData.icon;
+                    return (
+                      <TechItem key={tech}>
+                        <TechIcon color={techData.color}>
+                          <Icon />
+                        </TechIcon>
+                        <TechName>{techData.name}</TechName>
+                      </TechItem>
+                    );
+                  })}
+                  {totalValidTechs > 3 && (
+                    <TechMoreBadge>+{totalValidTechs - 3}</TechMoreBadge>
+                  )}
+                </>
+              );
+            })()}
+          </TechContainer>
+        )}
+
         <ButtonContainer>
           {project.liveDemoUrl && (
             <CardButton
