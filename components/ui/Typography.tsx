@@ -7,7 +7,7 @@ interface TypographyProps {
   children: ReactNode;
   className?: string;
   variant?: "light" | "dark";
-  noMargin?: boolean;
+  $noMargin?: boolean;
 }
 
 const H1 = styled.h1<{ variant?: "light" | "dark" }>`
@@ -50,10 +50,10 @@ const H4 = styled.h4<{ variant?: "light" | "dark" }>`
       : theme.colors.text.primary};
 `;
 
-const Text = styled.p<{ variant?: "light" | "dark"; noMargin?: boolean }>`
+const Text = styled.p<{ variant?: "light" | "dark"; $noMargin?: boolean }>`
   font-size: ${theme.typography.fontSize.md};
   line-height: 1.5;
-  margin-bottom: ${(props) => (props.noMargin ? "0" : theme.spacing[2])};
+  margin-bottom: ${(props) => (props.$noMargin ? "0" : theme.spacing[2])};
   color: ${(props) =>
     props.variant === "dark"
       ? theme.colors.text.light
@@ -99,8 +99,8 @@ export const Typography = {
       {children}
     </H4>
   ),
-  Text: ({ children, className, variant, noMargin }: TypographyProps) => (
-    <Text className={className} variant={variant} noMargin={noMargin}>
+  Text: ({ children, className, variant, $noMargin }: TypographyProps) => (
+    <Text className={className} variant={variant} $noMargin={$noMargin}>
       {children}
     </Text>
   ),
