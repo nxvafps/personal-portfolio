@@ -24,8 +24,13 @@ interface ProjectCardProps {
 
 const ProjectCardWrapper = styled(Card)`
   && {
-    background-color: ${theme.colors.secondary};
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(
+      145deg,
+      ${theme.colors.secondary} 0%,
+      rgba(15, 15, 15, 0.95) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: ${theme.borderRadius.xl};
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
@@ -33,17 +38,13 @@ const ProjectCardWrapper = styled(Card)`
     padding: 0;
     overflow: hidden;
     position: relative;
-    backdrop-filter: blur(10px);
     cursor: pointer;
-    pointer-events: all;
-    user-select: none;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.2);
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.3);
     }
 
     &:active {
@@ -54,20 +55,16 @@ const ProjectCardWrapper = styled(Card)`
   h2 {
     color: ${theme.colors.text.light};
     font-size: 1.5rem;
+    font-weight: ${theme.typography.fontWeight.bold};
     letter-spacing: -0.025em;
+    margin-bottom: ${theme.spacing[2]};
   }
 
   p {
     color: ${theme.colors.text.light};
-    opacity: 0.9;
+    opacity: 0.85;
     line-height: 1.6;
-  }
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-      0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    border-color: rgba(255, 255, 255, 0.2);
+    font-size: ${theme.typography.fontSize.sm};
   }
 `;
 
@@ -78,13 +75,13 @@ const ProjectStatus = styled.div`
   background-color: ${({ status }) => {
     switch (status?.toLowerCase()) {
       case "completed":
-        return "rgba(16, 185, 129, 0.15)";
+        return "rgba(16, 185, 129, 0.2)";
       case "in progress":
-        return "rgba(59, 130, 246, 0.15)";
+        return "rgba(59, 130, 246, 0.2)";
       case "planned":
-        return "rgba(249, 115, 22, 0.15)";
+        return "rgba(249, 115, 22, 0.2)";
       default:
-        return "rgba(107, 114, 128, 0.15)";
+        return "rgba(107, 114, 128, 0.2)";
     }
   }};
   color: ${({ status }) => {
@@ -104,6 +101,8 @@ const ProjectStatus = styled.div`
   font-weight: 600;
   letter-spacing: 0.025em;
   text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
   &::before {
     content: "";
@@ -123,21 +122,23 @@ const FeaturedBadge = styled.div`
   display: inline-flex;
   align-items: center;
   padding: ${theme.spacing[1]} ${theme.spacing[2]};
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  color: ${theme.colors.text.light};
+  background: linear-gradient(
+    90deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryHover}
+  );
+  color: white;
   border-radius: ${theme.borderRadius.full};
   font-size: ${theme.typography.fontSize.xs};
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
 `;
 
 const ProjectCardContent = styled.div`
   flex: 1;
-  padding: ${theme.spacing[5]};
+  padding: ${theme.spacing[6]};
   padding-top: ${theme.spacing[10]};
 `;
 
@@ -148,14 +149,15 @@ const BadgeContainer = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing[2]};
+  z-index: 1;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   width: 100%;
   margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.2);
 `;
 
 const CardButton = styled(Button)`
@@ -178,12 +180,12 @@ const CardButton = styled(Button)`
   letter-spacing: 0.025em;
 
   &:first-child {
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    color: ${theme.colors.text.light};
+    color: ${theme.colors.primary};
     transform: translateY(-1px);
   }
 
@@ -197,7 +199,7 @@ const TechContainer = styled.div`
   flex-wrap: wrap;
   gap: ${theme.spacing[2]};
   margin-top: ${theme.spacing[4]};
-  padding: 0 ${theme.spacing[5]};
+  padding: 0 ${theme.spacing[6]};
   padding-bottom: ${theme.spacing[4]};
 `;
 
@@ -205,11 +207,19 @@ const TechItem = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing[1]};
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: ${theme.borderRadius.md};
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing[1]} ${theme.spacing[2]};
   font-size: ${theme.typography.fontSize.xs};
   white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+  }
 `;
 
 const TechIcon = styled.span`
@@ -217,7 +227,7 @@ const TechIcon = styled.span`
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  color: ${(props) => props.color || theme.colors.primary.main};
+  color: ${(props) => props.color || theme.colors.primary};
 `;
 
 const TechName = styled.span`
@@ -236,7 +246,8 @@ const StyledLink = styled(Link)`
 `;
 
 const TechMoreBadge = styled(TechItem)`
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(249, 115, 22, 0.2);
+  border: 1px solid rgba(249, 115, 22, 0.1);
   font-weight: 600;
 `;
 
