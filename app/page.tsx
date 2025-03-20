@@ -2,21 +2,30 @@
 import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { Typography } from "@/components/ui/Typography";
-import { Button, LinkButton } from "@/components/ui/Button";
-import Image from "next/image";
+import { LinkButton } from "@/components/ui/Button";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { theme, media } from "@/lib/theme";
 import { Section as BaseSection } from "@/components/layout/PageLayout";
 import {
-  allTechnologyIcons,
   environmentIcons,
   languageIcons,
   frameworkIcons,
   toolsAndTechnologies,
 } from "@/app/assets/icons";
-import { TechSkills } from "@/components/home/TechSkillsSection.tsx";
+import { TechSkills } from "@/components/home/TechSkillsSection";
 
-// Animations
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  status: string;
+  image?: string;
+  technologies: string[];
+  githubUrl?: string;
+  liveDemoUrl?: string;
+  featured: boolean;
+}
+
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -56,7 +65,7 @@ const HeroSection = styled(Section)`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: ${theme.spacing[20]} 0 ${theme.spacing[16]};
+  padding: ${theme.spacing[16]} 0 ${theme.spacing[16]};
   position: relative;
   overflow: hidden;
 
@@ -71,7 +80,7 @@ const HeroSection = styled(Section)`
       120deg,
       ${theme.colors.primary}22,
       ${theme.colors.secondary}33,
-      ${theme.colors.accent}22
+      ${theme.colors.primaryLight}22
     );
     background-size: 200% 200%;
     animation: ${gradientAnimation} 15s ease infinite;
@@ -95,7 +104,7 @@ const HeroSection = styled(Section)`
   }
 
   ${media.md} {
-    padding: ${theme.spacing[24]} 0 ${theme.spacing[20]};
+    padding: ${theme.spacing[16]} 0 ${theme.spacing[16]};
   }
 `;
 
@@ -282,7 +291,7 @@ const CTASection = styled(Section)`
   h2 {
     margin-bottom: ${theme.spacing[4]};
     background: -webkit-linear-gradient(
-      ${theme.colors.text.dark},
+      ${theme.colors.text.light},
       ${theme.colors.primary}
     );
     -webkit-background-clip: text;
@@ -292,7 +301,7 @@ const CTASection = styled(Section)`
 `;
 
 export default function Home() {
-  const [featuredProjects, setFeaturedProjects] = useState([]);
+  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

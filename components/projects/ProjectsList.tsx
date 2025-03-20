@@ -221,7 +221,7 @@ export function ProjectsList() {
             <option value="">All Statuses</option>
             <option value={ProjectStatus.COMPLETED}>Completed</option>
             <option value={ProjectStatus.IN_PROGRESS}>In Progress</option>
-            <option value={ProjectStatus.PLANNED}>Planned</option>
+            <option value={ProjectStatus.PLANNING}>Planned</option>
           </FilterSelect>
         </FilterGroup>
       </FiltersContainer>

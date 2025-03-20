@@ -25,7 +25,7 @@ function hexToRgb(hex: string) {
   return `${r}, ${g}, ${b}`;
 }
 
-export const NavContainer = styled.header`
+export const NavContainer = styled.header<{ $isDark?: boolean }>`
   ${glassEffect};
   width: 100%;
   position: sticky;
