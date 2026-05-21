@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createUser } from "@/lib/auth";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +9,7 @@ export async function POST(req: NextRequest) {
     if (!name || !email || !password) {
       return NextResponse.json(
         { message: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -22,7 +20,7 @@ export async function POST(req: NextRequest) {
     if (existingUser) {
       return NextResponse.json(
         { message: "User with this email already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -42,13 +40,13 @@ export async function POST(req: NextRequest) {
         },
         message: "Registration successful",
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Registration error:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

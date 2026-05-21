@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/prisma/generated/prisma/client";
 
 export function useAuth({
   required = false,
@@ -27,7 +27,7 @@ export function useAuth({
 
     if (required && !isAuthenticated) {
       router.push(
-        `${redirectTo}?callbackUrl=${encodeURIComponent(window.location.href)}`
+        `${redirectTo}?callbackUrl=${encodeURIComponent(window.location.href)}`,
       );
     }
 

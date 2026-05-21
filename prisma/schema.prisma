@@ -1,122 +1,103 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-enum ProjectStatus {
-  IDEA
-  PLANNING
-  IN_PROGRESS
-  COMPLETED
-  ON_HOLD
-  ABANDONED
 }
 
 model Project {
-  id           Int            @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   title        String
   description  String
-  slug         String         @unique
+  slug         String        @unique
   imageUrl     String?
-  status       ProjectStatus  @default(IDEA)
   liveDemoUrl  String?
   githubUrl    String?
   technologies String[]
-  languages    String[]
-  featured     Boolean        @default(false)
-  startDate    DateTime?
-  endDate      DateTime?
+  featured     Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   category     String?
+  endDate      DateTime?
+  startDate    DateTime?
+  status       ProjectStatus @default(IDEA)
   testimonial  String?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  likes       ProjectLike[]
-  comments    Comment[]
-}
-
-enum UserRole {
-  ADMIN
-  USER
+  languages    String[]
+  comments     Comment[]
+  likes        ProjectLike[]
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   name          String
-  email         String    @unique
+  email         String        @unique
   passwordHash  String
-  role          UserRole  @default(USER)
+  role          UserRole      @default(USER)
   emailVerified DateTime?
   image         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   accounts      Account[]
-  sessions      Session[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  projectLikes  ProjectLike[]
   comments      Comment[]
   commentLikes  CommentLike[]
+  projectLikes  ProjectLike[]
+  sessions      Session[]
 }
 
 model ProjectLike {
   id        Int      @id @default(autoincrement())
   userId    Int
   projectId Int
-  isLike    Boolean 
+  isLike    Boolean
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  
-  @@unique([userId, projectId]) 
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectId])
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
-  content   String   @db.Text
+  id        Int           @id @default(autoincrement())
+  content   String
   userId    Int
   projectId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  
-  likes CommentLike[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes     CommentLike[]
 }
 
 model CommentLike {
   id        Int      @id @default(autoincrement())
   userId    Int
   commentId Int
-  isLike    Boolean
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  
+  isLike    Boolean
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([userId, commentId])
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             Int
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -135,4 +116,18 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum ProjectStatus {
+  IDEA
+  PLANNING
+  IN_PROGRESS
+  COMPLETED
+  ON_HOLD
+  ABANDONED
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }

@@ -3,10 +3,8 @@ dotenv.config({
   node_env: process.env.NODE_ENV || "development",
 });
 
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { devData, testData } from "./data/index";
-
-const prisma = new PrismaClient();
 
 async function main() {
   await prisma.projectLike.deleteMany({});

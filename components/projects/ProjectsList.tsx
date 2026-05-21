@@ -5,7 +5,7 @@ import { theme } from "../../lib/theme";
 import { Typography } from "../ui/Typography";
 import { Button } from "../ui/Button";
 import { ProjectCard } from "./ProjectCard";
-import { ProjectStatus } from "@prisma/client";
+import { ProjectStatus } from "@/prisma/generated/prisma/enums";
 
 interface Project {
   id: number;
@@ -169,15 +169,15 @@ const FilterSelect = styled.select`
   position: relative;
 
   /* Custom dropdown arrow */
-  background-image: linear-gradient(
-      45deg,
-      transparent 50%,
-      ${theme.colors.primary} 50%
-    ),
+  background-image:
+    linear-gradient(45deg, transparent 50%, ${theme.colors.primary} 50%),
     linear-gradient(135deg, ${theme.colors.primary} 50%, transparent 50%);
-  background-position: calc(100% - 20px) calc(50% + 2px),
+  background-position:
+    calc(100% - 20px) calc(50% + 2px),
     calc(100% - 15px) calc(50% + 2px);
-  background-size: 5px 5px, 5px 5px;
+  background-size:
+    5px 5px,
+    5px 5px;
   background-repeat: no-repeat;
 
   &:hover,
@@ -189,7 +189,8 @@ const FilterSelect = styled.select`
       rgba(255, 255, 255, 0.12)
     );
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15),
+    box-shadow:
+      0 6px 12px rgba(0, 0, 0, 0.15),
       0 0 0 2px ${theme.colors.primary}22;
     outline: none;
   }

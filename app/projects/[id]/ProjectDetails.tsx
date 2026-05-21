@@ -248,7 +248,7 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
             projectId = parseInt(params.id as string, 10);
           }
         }
-        if (isNaN(projectId)) {
+        if (projectId === undefined || isNaN(projectId)) {
           throw new Error("Invalid project ID. The ID must be a number.");
         }
 
@@ -348,7 +348,7 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
           <Skills>
             {project.languages.map((lang) => {
               const langData = allTechnologyIcons.find(
-                (t) => t.name.toLowerCase() === lang.toLowerCase()
+                (t) => t.name.toLowerCase() === lang.toLowerCase(),
               );
 
               return (
@@ -380,7 +380,7 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
           <Skills>
             {project.technologies.map((tech) => {
               const techData = allTechnologyIcons.find(
-                (t) => t.name.toLowerCase() === tech.toLowerCase()
+                (t) => t.name.toLowerCase() === tech.toLowerCase(),
               );
 
               return (
@@ -438,7 +438,7 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
                 window.open(
                   project.liveDemoUrl!,
                   "_blank",
-                  "noopener,noreferrer"
+                  "noopener,noreferrer",
                 )
               }
             >

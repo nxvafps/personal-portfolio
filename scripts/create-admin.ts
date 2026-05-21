@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import readline from "readline";
-
-const prisma = new PrismaClient();
 
 const rl = readline.createInterface({
   input: process.stdin,

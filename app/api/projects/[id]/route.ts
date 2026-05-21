@@ -1,26 +1,24 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
-    const id = parseInt(params.id);
+    const { id } = await params;
+    const projectId = parseInt(id);
 
-    if (isNaN(id)) {
+    if (isNaN(projectId)) {
       return NextResponse.json(
         { error: "Invalid project ID. Please provide a valid number." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const project = await prisma.project.findUnique({
       where: {
-        id: id,
+        id: projectId,
       },
       include: {
         likes: {
@@ -58,7 +56,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     console.error("Error fetching project:", error);
     return NextResponse.json(
       { error: "Failed to fetch project" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

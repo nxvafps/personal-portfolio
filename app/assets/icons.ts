@@ -5,7 +5,7 @@ import {
   SiNextdotjs as NextjsIcon,
   SiJavascript as JavascriptIcon,
   SiHtml5 as HtmlIcon,
-  SiCss3 as CssIcon,
+  SiCss as CssIcon,
   SiStyledcomponents as StyledComponentsIcon,
   SiPostgresql as PostgresIcon,
   SiPrisma as PrismaIcon,
@@ -35,7 +35,7 @@ import { VscVscode as VsCodeIcon } from "react-icons/vsc";
 
 export interface TechnologyIcon {
   name: string;
-  icon: React.ComponentType;
+  icon: React.ElementType;
   color?: string;
 }
 
@@ -106,7 +106,6 @@ export {
   JestIcon,
   SwaggerIcon,
   AxiosIcon,
-  GithubIcon,
   GithubActionsIcon,
   DotenvIcon,
   PassportIcon,

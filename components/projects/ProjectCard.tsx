@@ -68,7 +68,7 @@ const ProjectCardWrapper = styled(Card)`
   }
 `;
 
-const ProjectStatus = styled.div`
+const ProjectStatus = styled.div<{ status: string }>`
   display: inline-flex;
   align-items: center;
   padding: ${theme.spacing[1]} ${theme.spacing[3]};
@@ -297,7 +297,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
               for (const tech of project.technologies) {
                 const techData = allTechnologyIcons.find(
-                  (t) => t.name.toLowerCase() === tech.toLowerCase()
+                  (t) => t.name.toLowerCase() === tech.toLowerCase(),
                 );
 
                 if (techData) {
@@ -312,8 +312,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
               const totalValidTechs = project.technologies.filter((tech) =>
                 allTechnologyIcons.some(
-                  (t) => t.name.toLowerCase() === tech.toLowerCase()
-                )
+                  (t) => t.name.toLowerCase() === tech.toLowerCase(),
+                ),
               ).length;
 
               return (

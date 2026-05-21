@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient, ProjectStatus } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
+import { ProjectStatus } from "@/prisma/generated/prisma/enums";
 
 export async function GET(req: NextRequest) {
   try {
@@ -10,7 +9,7 @@ export async function GET(req: NextRequest) {
     const page = Math.max(1, parseInt(searchParams.get("page") || "1") || 1);
     const limit = Math.max(
       1,
-      Math.min(50, parseInt(searchParams.get("limit") || "10") || 10)
+      Math.min(50, parseInt(searchParams.get("limit") || "10") || 10),
     );
     const skip = (page - 1) * limit;
 
@@ -53,7 +52,7 @@ export async function GET(req: NextRequest) {
     console.error("Error fetching projects:", error);
     return NextResponse.json(
       { error: "Failed to fetch projects" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

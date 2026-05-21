@@ -1,4 +1,4 @@
-import { ProjectStatus } from "@prisma/client";
+import { ProjectStatus } from "@/prisma/generated/prisma/client";
 
 export const projects = [
   {

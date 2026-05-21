@@ -107,9 +107,6 @@ const Main = styled.main`
   width: 100%;
   max-width: 1200px;
 `;
-const Container = styled.div`
-  padding: ${theme.spacing[8]} 0;
-`;
 
 const Section = styled.section`
   display: flex;
@@ -120,13 +117,6 @@ const Section = styled.section`
   h2 {
     margin-bottom: ${theme.spacing[2]};
   }
-`;
-
-const SectionTitle = styled.h2`
-  color: ${theme.colors.text.primary};
-  font-size: ${theme.typography.fontSize.xl};
-  font-weight: ${theme.typography.fontWeight.bold};
-  margin-bottom: ${theme.spacing[6]};
 `;
 
 const IconGrid = styled.div`

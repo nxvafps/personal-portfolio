@@ -10,7 +10,7 @@ import PageLayout, {
 } from "@/components/layout/PageLayout";
 import { Card, CardTitle, CardContent, Typography } from "@/components/";
 import { theme } from "@/lib/theme";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/prisma/generated/prisma/enums";
 
 const StyledLink = styled(Link)`
   display: inline-block;

@@ -1,8 +1,7 @@
 import { getServerSession } from "next-auth/next";
-import { PrismaClient, UserRole } from "@prisma/client";
+import { UserRole } from "@/prisma/generated/prisma/enums";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
-
-const prisma = new PrismaClient();
 
 export async function getSession() {
   return await getServerSession();
